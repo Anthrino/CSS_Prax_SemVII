@@ -3,5 +3,5 @@ Source code for experiments from Cryptogrpahy and System Secuirity practicals.
 
 List of Programs:
 
-MD5 Hash Login Authenticator
-Man in the Middle Attack Simulation
+- MD5 Hash Login Authenticator
+- Man in the Middle Attack Simulation
