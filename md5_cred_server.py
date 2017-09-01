@@ -2,7 +2,7 @@ import hashlib
 import pickle
 import socket
 
-# Configure client socket and connection info
+# Configure server socket and connection info
 server_skt = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = socket.gethostname()
 port = 9000
@@ -17,7 +17,7 @@ print("\nAuthentication Server running on port :", port)
 conn, (ip, cport) = server_skt.accept()
 auth_req = conn.recv(port).decode()
 mode, uname, passwd = auth_req.split('/')
-# print(mode, uname, passwd)
+print(mode+"/"+uname+"/"+passwd)
 
 # Open credentials hash file
 auth_creds = pickle.load(open('auth_cred.p', 'rb'))

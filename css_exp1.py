@@ -33,8 +33,20 @@ elif choice == 2:
 			flag = 1
 	# print(rails)
 	for x in rails:
-		cipher_text += x + '-'
+		cipher_text += x
+	
 	# Decryption
+	rails = [''] * key
+	
+	x, xdir, y, count = 0, 0, 0, 0
+	while count < len(cipher_text):
+		if y == key:
+
+	# for j in range(len(
+	#
+	# for i in range(key):
+	# 		rails[]
+
 	decryp_text = 'Under construction'
 
 

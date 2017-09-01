@@ -29,7 +29,7 @@ pass_hash = hashlib.md5(password.encode()).hexdigest()
 client_skt.connect((host, port))
 payload = mode_hash + "/" + user_hash + "/" + pass_hash
 
-# print(payload)
+print(payload)
 
 # Send auth request to server with credentials
 client_skt.send(payload.encode())
