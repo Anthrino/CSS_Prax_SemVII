@@ -6,7 +6,8 @@ import time
 def main():
 	# Get host
 	host = socket.gethostbyname(socket.gethostname())
-	print('Host IP: {}'.format(host))
+	print('\n --- IP Spoof Prevention Filter ---')
+	print(' Host IP: {}'.format(host))
 
 	# Create a raw socket and bind it
 	conn = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_IP)
@@ -27,20 +28,22 @@ def main():
 
 		dest_mac, src_mac, eth_proto, data = ethernet_frame(raw_data)
 
-		print('\n > IP Packet Ethernet Frame ')
-		print("Destination MAC: {}".format(dest_mac), end=' | ')
+		print('\n IP Packet Ethernet Frame ')
+		print(" > Destination MAC: {}".format(dest_mac), end=' | ')
 		print("Source MAC: {}".format(src_mac))
 		# print("Protocol: {}".format(eth_proto))
 
+		# print('White List: ', white_list)
+		# print('Black List: ', black_list)
 		ip_addr = addr[0]
 
 		if ip_addr in black_list:
-			print("Blocked IP Address : "+ip_addr)
+			print(" > Blocked IP Address : "+ip_addr)
 		elif ip_addr in white_list:
-			print("Permitted IP Address : "+ip_addr)
+			print(" > Permitted IP Address : "+ip_addr)
 		else:
-			print("New IP Address : "+ip_addr)
-			choice = input("Enter (1) to add to white list or (2) for blacklist : ")
+			print(" > Detected New IP Address : "+ip_addr)
+			choice = int(input(" Enter (1) to add to white list or (2) for blacklist : "))
 			if choice == 1:
 				white_list.append(ip_addr)
 			else:
