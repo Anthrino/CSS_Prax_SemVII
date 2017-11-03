@@ -1,27 +1,28 @@
+print('OTP Client')
+
 import socket
 
-def OTP_fx(x):
-	return
-
-# Configure client socket and connection info
-client_skt = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-host = socket.gethostname()
-port = 9000
-mode = "auth"
-
-print("\n -- OTP Authenticator -- \n")
+s = socket.socket()
+port = 12345
 
 
-# Connect to authentication server
-client_skt.connect((host, port))
-payload = mode_hash + "/" + user_hash + "/" + pass_hash
+def socket_connect():
+    global s
+    try:
+        s.connect(('127.0.0.1', port))
+    except Exception as e:
+        print('Socket creation error ' + str(e))
+        time.sleep(5)
+        socket_connect()
+    name = input(s.recv(20480).decode('UTF-8')).lower()
+    s.send(bytes(name, 'UTF-8'))
+    s_random = int((s.recv(20480).decode('UTF-8')))
+    print('Random number received:', s_random)
+    key = int(input('Enter key: '))
+    print('Key generated:', key)
+    s.send(bytes(str(key), 'UTF-8'))
+    while True:
+    	pass
 
-print(payload)
 
-# Send auth request to server with credentials
-client_skt.send(payload.encode())
-
-print("\n" + client_skt.recv(9999).decode())
-
-print("Closing connection. Server out.")
-client_skt.close()
+socket_connect()
