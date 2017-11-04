@@ -1,6 +1,7 @@
+# Network IP Filtering
+
 import socket
 import struct
-import time
 
 
 def main():

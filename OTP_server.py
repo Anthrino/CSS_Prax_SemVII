@@ -1,106 +1,45 @@
-print('OTP Server')
+# Server Program for OTP Challenge Response System
 
 import socket
 from random import randint
-from threading import Thread
-from queue import Queue
 
-s = None
-clients = Queue()
+server_skt = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+host = socket.gethostname()
+port = 9000
+hit_ct = 0
+
+server_skt.bind((host, port))
+server_skt.listen(5)
+print("\n> OTP Authentication Server running on port", port)
 
 
-def sum_of_digits(num):
+# Accept and process client requests
+
+def OTP_Gen(num):
 	num = str(num)
 	tot = 0
 	for n in num:
 		tot += int(n)
-	return tot
+	return tot * 2
 
 
-def square(num):
-	return num*num
+while hit_ct < 5:
+	conn, (ip, cport) = server_skt.accept()
+	username = conn.recv(9999).decode('UTF-8').lower()
+	print('\nConnected to ' + username)
+	hit_ct += 1
+	r = randint(100, 10000)
+	conn.send(bytes(str(r), 'UTF-8'))
+	key = OTP_Gen(r)
+	print('Key generated:', key)
 
+	client_key = int(conn.recv(9999).decode('UTF-8'))
+	print('Key received:', client_key)
 
-def reverse(num):
-	return int(''.join(reversed(str(num))))
-
-
-func_list = {'hasti': sum_of_digits, 'vivek': square, 'sagar': reverse}
-def create_socket():
-	global s
-	s = socket.socket()
-	s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-	print('Socket Created')
-	return
-
-
-def socket_bind():
-	global s
-	try:
-		print('Binding socket...')
-		s.bind(('127.0.0.1', 12345))
-		s.listen(5)
-		print('Socket binded')
-	except Exception as e:
-		print('Socket binding error: ' + str(e))
-		print('binding again')
-		socket_bind()
-	return
-
-
-
-def client_handler(c):
-	while True:
-		try:
-			c.send(bytes('Username: ', 'UTF-8'))
-			cl_name = c.recv(20480).decode('UTF-8').lower()
-			r = randint(100, 10000)
-			c.send(bytes(str(r), 'UTF-8'))
-			key = func_list[cl_name](r)
-			print('Key generated:', key)
-			cl_key = int(c.recv(20480).decode('UTF-8'))
-			print('Key received:', cl_key)
-			if key == cl_key:
-				print('Access Granted!')
-			else:
-				print('Access Denied!')
-				break
-		except:
-			continue
-
-
-def accept_connections():
-	global s
-	global clients
-	while True:
-		try:
-			c, address = s.accept()
-			c.setblocking(1)
-		except Exception as e:
-			print('Error accepting connections: %s' % str(e))
-			continue
-		clients.put(c)
-	return
-
-
-def do_init():
-	global s
-	create_socket()
-	socket_bind()
-	accept_connections()
-
-
-server_thread = Thread(target=do_init)
-# server_thread.daemon = True
-server_thread.start()
-
-
-def otp():
-	while True:
-		c = clients.get()
-		Thread(target=client_handler, args=(c,)).start()
-
-
-multiclient_thread = Thread(target=otp)
-multiclient_thread.daemon = True
-multiclient_thread.start()
+	if key == client_key:
+		print(username + ' authentication successful.')
+		conn.send(bytes('authentication successful', 'UTF-8'))
+	else:
+		print(username + ' authentication invalid.')
+		conn.send(bytes('authentication invalid', 'UTF-8'))
+		break

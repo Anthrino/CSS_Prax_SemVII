@@ -1,6 +1,9 @@
+# Symmetric Key Ciphers
+
 key = int(input('Enter encryption key : '))
 inp_text = input('Enter your plaintext : ')
-choice = int(input('\nChoose encryption Method : \n1. Substitution Cipher \n2. Rail Fence Cipher \n3. Columnar Cipher \nEnter option : '))
+choice = int(input(
+	'\nChoose encryption Method : \n1. Substitution Cipher \n2. Rail Fence Cipher \n3. Columnar Cipher \nEnter option : '))
 cipher_text = ''
 decryp_text = ''
 
@@ -34,13 +37,13 @@ elif choice == 2:
 	# print(rails)
 	for x in rails:
 		cipher_text += x
-	
+
 	# Decryption
 	rails = [''] * key
-	
+
 	x, xdir, y, count = 0, 0, 0, 0
-	while count < len(cipher_text):
-		if y == key:
+	# while count < len(cipher_text):
+	# 	if y == key:
 
 	# for j in range(len(
 	#
