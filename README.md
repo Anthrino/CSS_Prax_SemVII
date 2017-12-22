@@ -7,3 +7,4 @@ List of Programs:
 - MD5 Hash Login Authenticator
 - Man in the Middle Attack Simulation
 - IP Spoof Detection
+- One Time Password (OTP) Generation.
